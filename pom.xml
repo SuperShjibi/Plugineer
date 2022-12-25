@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>top.shjibi</groupId>
-    <artifactId>Plugineer</artifactId>
+    <artifactId>plugineer</artifactId>
     <version>1.0.0</version>
 
     <name>Plugineer</name>
