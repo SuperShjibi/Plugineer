@@ -1,3 +1,3 @@
-# plugineer
-Helps you create spigot plugins
+# Plugineer
+Helps you create spigot plugins  
 Currently working in progress...
