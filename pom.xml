@@ -8,7 +8,7 @@
     <artifactId>plugineer</artifactId>
     <version>1.0.0</version>
 
-    <name>Plugineer</name>
+    <name>plugineer</name>
     <description>Helps you make spigot plugins</description>
     <url>https://github.com/SuperShjibi/Plugineer</url>
 
