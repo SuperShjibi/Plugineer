@@ -39,7 +39,7 @@ public abstract class PlayerCommand extends BasicCommand {
 
     /** 决定tab列表中出现哪些词 */
     public List<String> completeTab(@NotNull Player p, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return Collections.emptyList();
+        return null;
     }
 
     /** 决定执行指令出现的效果 */

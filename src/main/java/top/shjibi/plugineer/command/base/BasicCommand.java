@@ -7,7 +7,6 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,7 +71,7 @@ public abstract class BasicCommand implements TabExecutor {
      * 决定tab列表中出现哪些词
      */
     public List<String> completeTab(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return Collections.emptyList();
+        return null;
     }
 
     /**
