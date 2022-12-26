@@ -23,8 +23,11 @@ public final class StringUtil {
 
     /**
      * 从指定字符串移除s
+     * @param s 给定的字符串
+     * @param remove 需要移除的字符串
+     * @return 移除remove后的字符串s
      */
-    public static String removeString(String s, String... remove) {
+    public static String remove(String s, String... remove) {
         for (String r : remove) {
             s = s.replace(r, "");
         }
@@ -48,7 +51,7 @@ public final class StringUtil {
         return builder.substring(0, builder.length() - 1);
     }
 
-    /** @see #join(String, String... elements)  */
+    /** 在elements之间插入s */
     public static String join(String s, List<String> elements) {
         return join(s, elements.toArray(new String[0]));
     }

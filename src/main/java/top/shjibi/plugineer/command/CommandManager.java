@@ -11,26 +11,27 @@ import java.util.Map;
 /** 一个负责管理指令的类 */
 public final class CommandManager {
 
-    private CommandManager(@NotNull JavaPlugin plugin, @NotNull Class<? extends BasicCommand>[] classes) {
+    private CommandManager(@NotNull JavaPlugin plugin, @NotNull Class<?>[] classes) {
         this.plugin = plugin;
         this.classes = classes;
         commandMap = new HashMap<>();
     }
 
     @NotNull private final JavaPlugin plugin;
-    @NotNull private final Class<? extends BasicCommand>[] classes;
-    @NotNull private final Map<Class<? extends BasicCommand>, BasicCommand> commandMap;
+    @NotNull private final Class<?>[] classes;
+    @NotNull private final Map<Class<?>, BasicCommand> commandMap;
 
     /** 创建一个指令管理者的实例 */
-    public static CommandManager newInstance(JavaPlugin plugin, Class<? extends BasicCommand>[] classes) {
+    public static CommandManager newInstance(JavaPlugin plugin, Class<?>... classes) {
         return new CommandManager(plugin, classes);
     }
 
     /** 注册所有的指令 */
     public void register() {
-        for (Class<? extends BasicCommand> clazz : classes) {
+        for (Class<?> clazz : classes) {
             try {
-                BasicCommand command = clazz.getConstructor(JavaPlugin.class).newInstance(plugin);
+                Object obj = clazz.getConstructor(JavaPlugin.class).newInstance(plugin);
+                if (!(obj instanceof BasicCommand command)) continue;
                 command.register();
                 commandMap.put(clazz, command);
             } catch (ReflectiveOperationException e) {
@@ -40,7 +41,7 @@ public final class CommandManager {
     }
 
     /** 获取指令表 */
-    public @NotNull Map<Class<? extends BasicCommand>, BasicCommand> getCommandMap() {
+    public @NotNull Map<Class<?>, BasicCommand> getCommandMap() {
         return commandMap;
     }
 

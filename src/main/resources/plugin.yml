@@ -1,0 +1,4 @@
+name: Plugineer
+main: top.shjibi.plugineer.Plugineer
+version: 1.0.0
+description: Helps you create spigot plugins
