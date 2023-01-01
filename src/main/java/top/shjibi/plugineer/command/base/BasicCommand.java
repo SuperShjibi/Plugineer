@@ -18,10 +18,13 @@ import static top.shjibi.plugineer.util.StringUtil.color;
  */
 public abstract class BasicCommand implements TabExecutor {
 
-    @NotNull protected final JavaPlugin plugin;
-    @NotNull protected final String name;
+    @NotNull
+    protected final JavaPlugin plugin;
+    @NotNull
+    protected final String name;
     protected final int minArgs;
-    @NotNull protected final String[] usage;
+    @NotNull
+    protected final String[] usage;
 
     public BasicCommand(@NotNull JavaPlugin plugin) {
         this.plugin = plugin;
@@ -79,17 +82,23 @@ public abstract class BasicCommand implements TabExecutor {
      */
     public abstract void execute(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args);
 
-    /** 获取指令名字 */
+    /**
+     * 获取指令名字
+     */
     public @NotNull String getName() {
         return name;
     }
 
-    /** 获取指令所需的最少参数 */
+    /**
+     * 获取指令所需的最少参数
+     */
     public int getMinArgs() {
         return minArgs;
     }
 
-    /** 获取指令用法 */
+    /**
+     * 获取指令用法
+     */
     public @NotNull String[] getUsage() {
         return usage;
     }

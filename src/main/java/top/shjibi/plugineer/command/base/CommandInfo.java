@@ -9,7 +9,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface CommandInfo {
     String name();
+
     int minArgs() default 0;
+
     String[] usage() default {};
+
     String[] playerOnlyMsg() default "&c该指令只能由玩家执行";
 }
