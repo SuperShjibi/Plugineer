@@ -52,14 +52,16 @@ public final class CommandManager {
     /**
      * 获取指令表
      */
-    public @NotNull Map<Class<?>, BasicCommand> getCommandMap() {
+    @NotNull
+    public Map<Class<?>, BasicCommand> getCommandMap() {
         return commandMap;
     }
 
     /**
      * 通过指令类型获取对应的BasicCommand
      */
-    public @Nullable BasicCommand getCommand(Class<? extends BasicCommand> clazz) {
+    @Nullable
+    public BasicCommand getCommand(Class<? extends BasicCommand> clazz) {
         return commandMap.get(clazz);
     }
 

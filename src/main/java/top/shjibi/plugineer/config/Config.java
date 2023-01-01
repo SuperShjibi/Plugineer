@@ -43,7 +43,8 @@ public class Config extends Configurable<YamlConfiguration> {
      *
      * @param path 要获取的配置的路径
      */
-    public @NotNull String getConfig(String path) {
+    @NotNull
+    public String getConfig(String path) {
         return Objects.toString(config.get(path));
     }
 
@@ -53,7 +54,8 @@ public class Config extends Configurable<YamlConfiguration> {
      * @param clazz 指定配置的类型，如果不符合该类型，则返回null
      * @param path  要获取的配置的路径
      */
-    public @Nullable <T> T getConfig(Class<T> clazz, String path) {
+    @Nullable
+    public <T> T getConfig(Class<T> clazz, String path) {
         return config.getObject(path, clazz);
     }
 
@@ -62,7 +64,8 @@ public class Config extends Configurable<YamlConfiguration> {
      *
      * @param path 要获取的注释的路径
      */
-    public @NotNull List<String> getComments(String path) {
+    @NotNull
+    public List<String> getComments(String path) {
         return config.getComments(path);
     }
 
@@ -71,7 +74,8 @@ public class Config extends Configurable<YamlConfiguration> {
      *
      * @param path 行内注释所在的路径
      */
-    public @NotNull List<String> getInlineComments(String path) {
+    @NotNull
+    public List<String> getInlineComments(String path) {
         return config.getInlineComments(path);
     }
 
@@ -87,7 +91,8 @@ public class Config extends Configurable<YamlConfiguration> {
     }
 
     @Override
-    protected @NotNull YamlConfiguration load(@NotNull File file) {
+    @NotNull
+    protected YamlConfiguration load(@NotNull File file) {
         YamlConfiguration config = new YamlConfiguration();
         if (!file.isFile()) throw new RuntimeException("file必须是一个文件");
         try {
@@ -105,27 +110,32 @@ public class Config extends Configurable<YamlConfiguration> {
     }
 
     @Override
-    public @NotNull File[] getFiles() {
+    @NotNull
+    public File[] getFiles() {
         return files;
     }
 
     @Override
-    public @NotNull String getName() {
+    @NotNull
+    public String getName() {
         return name;
     }
 
     @Override
-    public @NotNull File getFolder() {
+    @NotNull
+    public File getFolder() {
         return folder;
     }
 
     @Override
-    public @NotNull Plugin getPlugin() {
+    @NotNull
+    public Plugin getPlugin() {
         return plugin;
     }
 
     @Override
-    public @NotNull YamlConfiguration getData() {
+    @NotNull
+    public YamlConfiguration getData() {
         return config;
     }
 }

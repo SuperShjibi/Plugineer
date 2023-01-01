@@ -6,6 +6,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -73,6 +74,7 @@ public abstract class BasicCommand implements TabExecutor {
     /**
      * 决定tab列表中出现哪些词
      */
+    @Nullable
     public List<String> completeTab(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         return null;
     }
@@ -85,7 +87,8 @@ public abstract class BasicCommand implements TabExecutor {
     /**
      * 获取指令名字
      */
-    public @NotNull String getName() {
+    @NotNull
+    public String getName() {
         return name;
     }
 
@@ -99,7 +102,8 @@ public abstract class BasicCommand implements TabExecutor {
     /**
      * 获取指令用法
      */
-    public @NotNull String[] getUsage() {
+    @NotNull
+    public String[] getUsage() {
         return usage;
     }
 }

@@ -44,7 +44,8 @@ public final class ItemBuilder {
      * @param amount   构造ItemBuilder的物品的数量
      * @return 一个ItemBuilder
      */
-    public static @NotNull ItemBuilder of(Material material, int amount) {
+    @NotNull
+    public static ItemBuilder of(@NotNull Material material, int amount) {
         return new ItemBuilder(material, amount);
     }
 
@@ -54,7 +55,8 @@ public final class ItemBuilder {
      * @param material 构造ItemBuilder的物品的材料
      * @return 一个ItemBuilder
      */
-    public static @NotNull ItemBuilder of(@NotNull Material material) {
+    @NotNull
+    public static ItemBuilder of(@NotNull Material material) {
         return of(material, 1);
     }
 
@@ -64,7 +66,8 @@ public final class ItemBuilder {
      * @param itemStack 构造ItemBuilder的物品
      * @return 一个ItemBuilder
      */
-    public static @NotNull ItemBuilder of(@NotNull ItemStack itemStack) {
+    @NotNull
+    public static ItemBuilder of(@NotNull ItemStack itemStack) {
         return new ItemBuilder(itemStack);
     }
 
@@ -73,7 +76,8 @@ public final class ItemBuilder {
      *
      * @return 名字为name的ItemBuilder
      */
-    public @NotNull ItemBuilder withDisplayName(@NotNull String name) {
+    @NotNull
+    public ItemBuilder withDisplayName(@NotNull String name) {
         itemMeta.setDisplayName(name);
         return this;
     }
@@ -83,7 +87,8 @@ public final class ItemBuilder {
      *
      * @return 描述为lore的ItemBuilder
      */
-    public @NotNull ItemBuilder withLore(String... lore) {
+    @NotNull
+    public ItemBuilder withLore(String... lore) {
         itemMeta.setLore(Arrays.asList(lore));
         return this;
     }
@@ -93,7 +98,8 @@ public final class ItemBuilder {
      *
      * @return 描述为lore的ItemBuilder
      */
-    public @NotNull ItemBuilder withLore(List<String> lore) {
+    @NotNull
+    public ItemBuilder withLore(List<String> lore) {
         itemMeta.setLore(lore);
         return this;
     }
@@ -105,7 +111,8 @@ public final class ItemBuilder {
      * @param modifier  要修改属性的效果
      * @return 添加了属性修改的ItemBuilder
      */
-    public @NotNull ItemBuilder withAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
+    @NotNull
+    public ItemBuilder withAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
         itemMeta.addAttributeModifier(attribute, modifier);
         return this;
     }
@@ -116,7 +123,8 @@ public final class ItemBuilder {
      * @param attribute 要删除的属性
      * @return 删除了属性修改的ItemBuilder
      */
-    public @NotNull ItemBuilder withoutAttributeModifier(@NotNull Attribute attribute) {
+    @NotNull
+    public ItemBuilder withoutAttributeModifier(@NotNull Attribute attribute) {
         itemMeta.removeAttributeModifier(attribute);
         return this;
     }
@@ -128,7 +136,8 @@ public final class ItemBuilder {
      * @param modifier  要删除的属性修改效果
      * @return 删除了属性修改的ItemBuilder
      */
-    public @NotNull ItemBuilder withoutAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
+    @NotNull
+    public ItemBuilder withoutAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
         itemMeta.removeAttributeModifier(attribute);
         return this;
     }
@@ -139,7 +148,8 @@ public final class ItemBuilder {
      * @param flags 要添加的所有标签
      * @return 添加了标签的ItemBuilder
      */
-    public @NotNull ItemBuilder withItemFlags(@NotNull ItemFlag... flags) {
+    @NotNull
+    public ItemBuilder withItemFlags(@NotNull ItemFlag... flags) {
         itemMeta.addItemFlags(flags);
         return this;
     }
@@ -150,7 +160,8 @@ public final class ItemBuilder {
      * @param flags 要删除的所有标签
      * @return 删除了标签的ItemBuilder
      */
-    public @NotNull ItemBuilder withoutItemFlags(@NotNull ItemFlag... flags) {
+    @NotNull
+    public ItemBuilder withoutItemFlags(@NotNull ItemFlag... flags) {
         itemMeta.removeItemFlags(flags);
         return this;
     }
@@ -163,7 +174,8 @@ public final class ItemBuilder {
      * @param ignoreLevelRestriction 是否忽略等级限制
      * @return 一个附了指定魔咒的ItemBuilder
      */
-    public @NotNull ItemBuilder withEnchant(@NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
+    @NotNull
+    public ItemBuilder withEnchant(@NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
         itemMeta.addEnchant(enchantment, level, ignoreLevelRestriction);
         return this;
     }
@@ -174,7 +186,8 @@ public final class ItemBuilder {
      * @param enchantment 需要去除的附魔
      * @return 一个去除了指定附魔的ItemBuilder
      */
-    public @NotNull ItemBuilder withoutEnchant(@NotNull Enchantment enchantment) {
+    @NotNull
+    public ItemBuilder withoutEnchant(@NotNull Enchantment enchantment) {
         itemMeta.removeEnchant(enchantment);
         return this;
     }
@@ -187,7 +200,8 @@ public final class ItemBuilder {
      * @param z    数据值
      * @return 一个持有指定数据的ItemBuilder
      */
-    public @NotNull <T, Z> ItemBuilder withPersistentData(NamespacedKey key, PersistentDataType<T, Z> type, Z z) {
+    @NotNull
+    public <T, Z> ItemBuilder withPersistentData(NamespacedKey key, PersistentDataType<T, Z> type, Z z) {
         itemMeta.getPersistentDataContainer().set(key, type, z);
         return this;
     }
@@ -198,7 +212,8 @@ public final class ItemBuilder {
      * @param key 数据键
      * @return 一个删除了指定数据的ItemBuilder
      */
-    public @NotNull ItemBuilder withoutPersistentData(NamespacedKey key) {
+    @NotNull
+    public ItemBuilder withoutPersistentData(NamespacedKey key) {
         itemMeta.getPersistentDataContainer().remove(key);
         return this;
     }
@@ -208,7 +223,8 @@ public final class ItemBuilder {
      *
      * @return 物品的ItemMeta
      */
-    public @NotNull ItemMeta getItemMeta() {
+    @NotNull
+    public ItemMeta getItemMeta() {
         return itemMeta;
     }
 
@@ -217,7 +233,8 @@ public final class ItemBuilder {
      *
      * @return 最终的物品
      */
-    public @NotNull ItemStack build() {
+    @NotNull
+    public ItemStack build() {
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

@@ -37,16 +37,10 @@ public abstract class PlayerCommand extends BasicCommand {
         execute(p, command, label, args);
     }
 
-    /**
-     * 决定tab列表中出现哪些词
-     */
     public List<String> completeTab(@NotNull Player p, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         return null;
     }
 
-    /**
-     * 决定执行指令出现的效果
-     */
     public abstract void execute(@NotNull Player p, @NotNull Command command, @NotNull String label, @NotNull String[] args);
 
     /**

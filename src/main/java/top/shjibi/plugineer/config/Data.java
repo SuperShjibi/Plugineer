@@ -77,7 +77,8 @@ public class Data extends Configurable<Map<UUID, JsonObject>> {
      * @param obj  要修改的值
      * @return 修改前的值，如果没有，则返回null
      */
-    public @Nullable JsonObject setData(@NotNull UUID uuid, @NotNull JsonObject obj) {
+    @Nullable
+    public JsonObject setData(@NotNull UUID uuid, @NotNull JsonObject obj) {
         return data.put(uuid, obj);
     }
 
@@ -87,7 +88,8 @@ public class Data extends Configurable<Map<UUID, JsonObject>> {
      * @param uuid 要获取的数据的键
      * @return 以uuid为键的数据对应的值
      */
-    public @NotNull JsonObject getData(@NotNull UUID uuid) {
+    @NotNull
+    public JsonObject getData(@NotNull UUID uuid) {
         return data.get(uuid);
     }
 
@@ -112,32 +114,38 @@ public class Data extends Configurable<Map<UUID, JsonObject>> {
     }
 
     @Override
-    public @NotNull Plugin getPlugin() {
+    @NotNull
+    public Plugin getPlugin() {
         return plugin;
     }
 
     @Override
-    public @NotNull Map<UUID, JsonObject> getData() {
+    @NotNull
+    public Map<UUID, JsonObject> getData() {
         return data;
     }
 
     @Override
-    public @NotNull String getName() {
+    @NotNull
+    public String getName() {
         return name;
     }
 
     @Override
-    public @NotNull File getFolder() {
+    @NotNull
+    public File getFolder() {
         return folder;
     }
 
     @Override
-    public @NotNull File[] getFiles() {
+    @NotNull
+    public File[] getFiles() {
         return files;
     }
 
     @Override
-    protected @NotNull Map<UUID, JsonObject> load(@NotNull File folder) {
+    @NotNull
+    protected Map<UUID, JsonObject> load(@NotNull File folder) {
         if (!folder.isDirectory()) throw new RuntimeException("folder必须是一个目录");
         Map<UUID, JsonObject> map = new HashMap<>();
         if (files.length == 0) return map;
