@@ -20,11 +20,11 @@ import java.util.UUID;
  */
 public class Data extends Configurable<Map<UUID, JsonObject>> {
 
-    private final Plugin plugin;
-    private final File folder;
-    private final File[] files;
-    private final Map<UUID, JsonObject> data;
-    private final String name;
+    protected final Plugin plugin;
+    protected final File folder;
+    protected final File[] files;
+    protected final Map<UUID, JsonObject> data;
+    protected final String name;
 
     /**
      * 建立一个名字为name的数据
@@ -88,7 +88,7 @@ public class Data extends Configurable<Map<UUID, JsonObject>> {
      * @param uuid 要获取的数据的键
      * @return 以uuid为键的数据对应的值
      */
-    @NotNull
+    @Nullable
     public JsonObject getData(@NotNull UUID uuid) {
         return data.get(uuid);
     }
