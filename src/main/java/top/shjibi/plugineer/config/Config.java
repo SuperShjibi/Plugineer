@@ -36,7 +36,7 @@ public class Config extends Configurable<YamlConfiguration> {
         this.plugin = plugin;
         this.name = name;
         this.folder = mkdirs(plugin, folderPath);
-        this.files = new File[]{new File(folder, name + ".yml")};
+        this.files = new File[]{new File(folder.getAbsolutePath() + "\\" + name + ".yml")};
         this.config = load(files[0]);
     }
 
@@ -159,7 +159,6 @@ public class Config extends Configurable<YamlConfiguration> {
     @NotNull
     protected YamlConfiguration load(@NotNull File file) {
         YamlConfiguration config = new YamlConfiguration();
-        if (!file.isFile()) throw new RuntimeException("file必须是一个文件");
         try {
             if (!file.exists()) {
                 InputStream inputStream = plugin.getResource(name + ".yml");

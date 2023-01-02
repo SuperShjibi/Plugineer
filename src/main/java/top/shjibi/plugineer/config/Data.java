@@ -146,7 +146,6 @@ public class Data extends Configurable<Map<UUID, JsonObject>> {
     @Override
     @NotNull
     protected Map<UUID, JsonObject> load(@NotNull File folder) {
-        if (!folder.isDirectory()) throw new RuntimeException("folder必须是一个目录");
         Map<UUID, JsonObject> map = new HashMap<>();
         if (files.length == 0) return map;
         for (File file : files) {
