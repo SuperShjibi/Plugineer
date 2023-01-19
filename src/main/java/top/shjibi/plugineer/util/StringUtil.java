@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * 与字符串相关的工具类
+ * A utility class for {@link String}
  */
 public final class StringUtil {
 
@@ -17,7 +17,10 @@ public final class StringUtil {
     private static final Pattern stripPattern = Pattern.compile("[&§]([\\da-fk-orx])");
 
     /**
-     * 给消息染色
+     * Colors the message
+     *
+     * @param s The message to color
+     * @return The colored message
      */
     @NotNull
     public static String color(@NotNull String s) {
@@ -25,7 +28,10 @@ public final class StringUtil {
     }
 
     /**
-     * 去掉消息的颜色
+     * Strips the message
+     *
+     * @param s The message to strip
+     * @return the striped message
      */
     @NotNull
     public static String strip(@NotNull String s) {
@@ -33,11 +39,11 @@ public final class StringUtil {
     }
 
     /**
-     * 从指定字符串移除s
+     * Removes some strings from the given string
      *
-     * @param s      给定的字符串
-     * @param remove 需要移除的字符串
-     * @return 移除remove后的字符串s
+     * @param s      The string to remove from
+     * @param remove the strings to remove
+     * @return The modified string
      */
     @NotNull
     public static String remove(@NotNull String s, @NotNull String... remove) {
@@ -48,7 +54,11 @@ public final class StringUtil {
     }
 
     /**
-     * 在elements之间插入s
+     * Joins a string between each of the elements
+     *
+     * @param s        string to join
+     * @param elements the elements
+     * @return the final string
      */
     @NotNull
     public static String join(@NotNull String s, @NotNull String... elements) {
@@ -56,7 +66,24 @@ public final class StringUtil {
     }
 
     /**
-     * 在elements中，从start开始，插入s
+     * Joins a string between each of the elements
+     *
+     * @param s        string to join
+     * @param elements the elements
+     * @return the final string
+     */
+    @NotNull
+    public static String join(@NotNull String s, @NotNull List<String> elements) {
+        return join(s, elements.toArray(new String[0]));
+    }
+
+    /**
+     * Joins a string between each of the elements, starting from a specific index
+     *
+     * @param s        string to join between the elements
+     * @param start    index to start from
+     * @param elements the elements
+     * @return the final string
      */
     @NotNull
     public static String join(@NotNull String s, int start, @NotNull String... elements) {
@@ -70,11 +97,4 @@ public final class StringUtil {
         return builder.substring(0, builder.length() - 1);
     }
 
-    /**
-     * 在elements之间插入s
-     */
-    @NotNull
-    public static String join(@NotNull String s, @NotNull List<String> elements) {
-        return join(s, elements.toArray(new String[0]));
-    }
 }

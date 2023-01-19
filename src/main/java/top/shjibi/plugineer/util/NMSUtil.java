@@ -9,7 +9,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.logging.Level;
 
 /**
- * 与NMS相关的工具类
+ * A utility class that makes NMS and CraftBukkit easier.
+ * Currently still working in progress.
  */
 public final class NMSUtil {
 
@@ -17,7 +18,7 @@ public final class NMSUtil {
     }
 
     /**
-     * 获取当前服务器运行的MC的版本
+     * Gets the version of Minecraft that the server is running on
      */
     @NotNull
     public static String getVersion() {
@@ -26,46 +27,46 @@ public final class NMSUtil {
     }
 
     /**
-     * 获取NM类
+     * Gets a class in net.minecraft package
      */
     @Nullable
     public static Class<?> getNMClass(@NotNull String name) {
         try {
             return Class.forName("net.minecraft." + name);
         } catch (ClassNotFoundException e) {
-            Bukkit.getLogger().log(Level.WARNING, "无法找到类! (" + name + ")");
+            Bukkit.getLogger().log(Level.WARNING, "Cannot get NM class: " + name + "!");
             return null;
         }
     }
 
     /**
-     * 获取NMS类
+     * Gets a NMS class
      */
     @Nullable
     public static Class<?> getNMSClass(@NotNull String name) {
         try {
             return Class.forName("net.minecraft.server." + getVersion() + "." + name);
         } catch (ClassNotFoundException e) {
-            Bukkit.getLogger().log(Level.WARNING, "无法找到类! (" + name + ")");
+            Bukkit.getLogger().log(Level.WARNING, "Cannot find NMS class: " + name + "!");
             return null;
         }
     }
 
     /**
-     * 获取CraftBukkit类
+     * Gets a CraftBukkit class
      */
     @Nullable
     public static Class<?> getCraftBukkitClass(@NotNull String name) {
         try {
             return Class.forName("org.bukkit.craftbukkit." + getVersion() + "." + name);
         } catch (ClassNotFoundException e) {
-            Bukkit.getLogger().log(Level.WARNING, "无法找到类! (" + name + ")");
+            Bukkit.getLogger().log(Level.WARNING, "Cannot find CraftBukkit class: " + name + "!");
             return null;
         }
     }
 
     /**
-     * 给玩家发包
+     * Sends a packet to the player
      */
     public static boolean sendPacket(@NotNull Player p, @NotNull Object packet) {
         try {
@@ -76,14 +77,14 @@ public final class NMSUtil {
             connection.getClass().getMethod("a", packetClass).invoke(connection, packet);
             return true;
         } catch (ReflectiveOperationException e) {
-            Bukkit.getLogger().log(Level.WARNING, "无法发送包: " + packet.getClass().getSimpleName());
+            Bukkit.getLogger().log(Level.WARNING, "Cannot send packet: " + packet.getClass().getSimpleName());
             e.printStackTrace();
             return false;
         }
     }
 
     /**
-     * 获取NMS的ItemStack
+     * Gets an NMS copy of the {@link ItemStack}
      */
     @Nullable
     public static Object asNMSCopy(@NotNull ItemStack item) {
@@ -92,14 +93,14 @@ public final class NMSUtil {
             if (itemClass == null) throw new ReflectiveOperationException();
             return itemClass.getMethod("asNMSCopy", ItemStack.class).invoke(null, item);
         } catch (ReflectiveOperationException e) {
-            Bukkit.getLogger().log(Level.WARNING, "无法获取NMS物品");
+            Bukkit.getLogger().log(Level.WARNING, "Cannot get NMS copy of item!");
             e.printStackTrace();
             return null;
         }
     }
 
     /**
-     * 获取物品NBT(字符串)
+     * Gets the NBT of an item (Only tested on 1.19)
      */
     @Nullable
     public static String getItemNBT(@NotNull ItemStack item) {
@@ -109,7 +110,7 @@ public final class NMSUtil {
             Object nbt = nmsItem.getClass().getMethod("u").invoke(nmsItem);
             return (String) nbt.getClass().getMethod("toString").invoke(nbt);
         } catch (ReflectiveOperationException | NullPointerException e) {
-            Bukkit.getLogger().log(Level.WARNING, "无法获取物品NBT");
+            Bukkit.getLogger().log(Level.WARNING, "Cannot get item NBT!");
             e.printStackTrace();
             return null;
         }

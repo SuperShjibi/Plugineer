@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 代表一种数据
+ * Data of a plugin
  */
 public class Data extends Configurable<Map<UUID, JsonObject>> {
 
@@ -27,21 +27,21 @@ public class Data extends Configurable<Map<UUID, JsonObject>> {
     protected final String name;
 
     /**
-     * 建立一个名字为name的数据
+     * Creates a {@link Data} with the specified name
      *
-     * @param plugin 数据所属插件
-     * @param name   数据名字
+     * @param plugin {@link Plugin} that the {@link Data} belongs to.
+     * @param name   Name of the data, will be used to create the folder
      */
     public Data(@NotNull Plugin plugin, @NotNull String name) {
         this(plugin, name, name);
     }
 
     /**
-     * 建立一个名字为name的数据
+     * Creates a {@link Data} with the specified name
      *
-     * @param plugin     数据所属插件
-     * @param name       数据名字
-     * @param folderPath 存储数据的文件夹的名字
+     * @param plugin     {@link Plugin} that the {@link Data} belongs to.
+     * @param name       Name of the data
+     * @param folderPath Folder which stores all the data files.
      */
     public Data(@NotNull Plugin plugin, @NotNull String name, @NotNull String folderPath) {
         this.plugin = plugin;
@@ -52,41 +52,43 @@ public class Data extends Configurable<Map<UUID, JsonObject>> {
     }
 
     /**
-     * 移除键为uuid的数据
+     * Removes the mapping for the specified {@link UUID} from this map if present.
      *
-     * @param uuid 要移除数据的键
+     * @param uuid The specified key
      */
     public void removeData(@Nullable UUID uuid) {
         data.remove(uuid);
     }
 
     /**
-     * 添加键为uuid, 值为obj的数据
+     * If the specified {@link UUID} doesn't exist in this data, then puts the {@link UUID} and {@link JsonObject}, otherwise does nothing.
      *
-     * @param uuid 要添加的键
-     * @param obj  要添加的值
+     * @param uuid The specified UUID
+     * @param obj  The value to put
+     * @return The previous value associated with the specified UUID.
      */
-    public void addData(@NotNull UUID uuid, @NotNull JsonObject obj) {
-        data.putIfAbsent(uuid, obj);
+    @Nullable
+    public JsonObject putDataIfAbsent(@NotNull UUID uuid, @NotNull JsonObject obj) {
+        return data.putIfAbsent(uuid, obj);
     }
 
     /**
-     * 将键为uuid的数据的值设置为obj
+     * Puts the {@link UUID} and {@link JsonObject}
      *
-     * @param uuid 要修改的键
-     * @param obj  要修改的值
-     * @return 修改前的值，如果没有，则返回null
+     * @param uuid The specified UUID
+     * @param obj  The value to put
+     * @return The previous value associated with the specified UUID.
      */
     @Nullable
-    public JsonObject setData(@NotNull UUID uuid, @NotNull JsonObject obj) {
+    public JsonObject putData(@NotNull UUID uuid, @NotNull JsonObject obj) {
         return data.put(uuid, obj);
     }
 
     /**
-     * 获取以uuid为键的数据对应的值
+     * Gets the value associated with the provided {@link UUID}
      *
-     * @param uuid 要获取的数据的键
-     * @return 以uuid为键的数据对应的值
+     * @param uuid The specified UUID
+     * @return The value associated with the provided UUID
      */
     @Nullable
     public JsonObject getData(@NotNull UUID uuid) {
@@ -94,15 +96,16 @@ public class Data extends Configurable<Map<UUID, JsonObject>> {
     }
 
     /**
-     * 保存键为uuid的数据
+     * Saves the data associated with the provided {@link UUID} to uuid.json
+     *
+     * @param uuid The specified UUID
      */
     public void saveData(@NotNull UUID uuid) {
         File file = new File(folder.getAbsolutePath() + "\\" + uuid + ".json");
         try {
             Files.writeString(file.toPath(), data.get(uuid).toString());
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("无法保存数据");
+            throw new RuntimeException("Cannot save file: " + file.getName(), e);
         }
     }
 
@@ -156,8 +159,7 @@ public class Data extends Configurable<Map<UUID, JsonObject>> {
                 JsonElement element = JsonParser.parseString(value);
                 if (element instanceof JsonObject obj) map.put(uuid, obj);
             } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException("无法加载数据: " + file.getName());
+                throw new RuntimeException("Cannot load file: " + file.getName(), e);
             }
         }
         return map;

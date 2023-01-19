@@ -5,18 +5,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import top.shjibi.plugineer.command.base.annotations.CommandInfo;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * 只有玩家能用的指令
+ * A command handler for the player only commands
  */
-public abstract class PlayerCommand extends BasicCommand {
+public abstract class PlayerCommandHandler extends CommandHandler {
 
     protected final String[] playerOnlyMsg;
 
-    public PlayerCommand(JavaPlugin plugin) {
+    public PlayerCommandHandler(JavaPlugin plugin) {
         super(plugin);
         CommandInfo info = getClass().getAnnotationsByType(CommandInfo.class)[0];
         this.playerOnlyMsg = info.playerOnlyMsg();
@@ -44,7 +45,7 @@ public abstract class PlayerCommand extends BasicCommand {
     public abstract void execute(@NotNull Player p, @NotNull Command command, @NotNull String label, @NotNull String[] args);
 
     /**
-     * 获取提醒这是一个仅限玩家指令的消息
+     * Gets the player only message
      */
     public String[] getPlayerOnlyMsg() {
         return playerOnlyMsg;

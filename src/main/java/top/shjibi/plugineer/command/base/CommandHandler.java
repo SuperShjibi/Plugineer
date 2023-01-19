@@ -7,50 +7,62 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.shjibi.plugineer.command.base.annotations.CommandInfo;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static top.shjibi.plugineer.util.StringUtil.color;
 
 
 /**
- * 基本的指令
+ * A basic command handler
  */
-public abstract class BasicCommand implements TabExecutor {
+public abstract class CommandHandler implements TabExecutor {
 
     @NotNull
     protected final JavaPlugin plugin;
     @NotNull
-    protected final String name;
+    protected final String[] names;
     protected final int minArgs;
     @NotNull
     protected final String[] usage;
 
-    public BasicCommand(@NotNull JavaPlugin plugin) {
+    public CommandHandler(@NotNull JavaPlugin plugin) {
         this.plugin = plugin;
+
+        // Reads the command information
         CommandInfo[] infoArray = getClass().getAnnotationsByType(CommandInfo.class);
-        if (infoArray.length == 0) throw new RuntimeException("无指令信息");
+        if (infoArray.length == 0) throw new RuntimeException("CommandInfo is not found!");
         CommandInfo info = infoArray[0];
-        this.name = info.name();
+
+        this.names = (String[]) Arrays.stream(info.name()).map(s -> s.toLowerCase(Locale.ENGLISH)).toArray();
         this.minArgs = info.minArgs();
         this.usage = info.usage();
     }
 
     /**
-     * 注册指令
+     * Registers the command
+     *
+     * @return The commands using this handler
      */
-    public void register() {
-        PluginCommand command = Objects.requireNonNull(plugin.getCommand(name));
-        command.setExecutor(this);
-        command.setTabCompleter(this);
+    public Command[] register() {
+        Command[] commands = new Command[names.length];
+        for (int i = 0; i < names.length; i++) {
+            PluginCommand command = Objects.requireNonNull(plugin.getCommand(names[i]));
+            commands[i] = command;
+            command.setExecutor(this);
+            command.setTabCompleter(this);
+        }
+        return commands;
     }
 
     /**
-     * 向指令发送者发送指令的正确用法
+     * Sends the correct usage of the command
      */
     protected final void sendUsage(@NotNull CommandSender sender, Object... replacement) {
-        if (usage.length == 0) return;
         for (String line : usage) {
             sender.sendMessage(color(String.format(line, replacement)));
         }
@@ -72,7 +84,7 @@ public abstract class BasicCommand implements TabExecutor {
     }
 
     /**
-     * 决定tab列表中出现哪些词
+     * Handles the tab list
      */
     @Nullable
     public List<String> completeTab(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -80,20 +92,20 @@ public abstract class BasicCommand implements TabExecutor {
     }
 
     /**
-     * 决定执行指令出现的效果
+     * Handles the command
      */
     public abstract void execute(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args);
 
     /**
-     * 获取指令名字
+     * Gets the names of commands associated with this handler
      */
     @NotNull
-    public String getName() {
-        return name;
+    public String[] getNames() {
+        return names;
     }
 
     /**
-     * 获取指令所需的最少参数
+     * Gets the minimum argument count required for the command to run
      */
     public int getMinArgs() {
         return minArgs;

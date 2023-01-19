@@ -7,73 +7,73 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 
 /**
- * 可以保存、读写的数据
+ * Configurable data of a specific plugin that can be saved and read.
  */
 public abstract class Configurable<T> {
 
     /**
-     * 保存内存中所有的数据
+     * Saves data in the memory
      */
     public abstract void save();
 
     /**
-     * 从文件中加载数据
+     * Loads data from a file
      *
-     * @param file 需要加载的文件
-     * @return 加载的数据
+     * @param file The file which stored data
+     * @return The loaded data
      */
     @NotNull
     protected abstract T load(@NotNull File file);
 
     /**
-     * @return 该数据的名字
+     * @return Name of this specific configurable
      */
     @NotNull
     public abstract String getName();
 
     /**
-     * @return 存储该数据的文件夹
+     * @return The folder where all the files are saved
      */
     @NotNull
     public abstract File getFolder();
 
     /**
-     * 获取存储数据的所有文件
+     * @return All the files which stored data
      */
     @NotNull
     public abstract File[] getFiles();
 
     /**
-     * 获取使用该数据的文件夹
+     * @return The plugin which owns and controls all the data
      */
     @NotNull
     public abstract Plugin getPlugin();
 
     /**
-     * @return 内存中所有的数据
+     * @return All the data in the memory
      */
     @NotNull
     public abstract T getData();
 
     /**
-     * 创建该插件的数据文件夹和存储数据的文件夹
+     * Creates the plugin folder and the folder which stores data
      *
-     * @param plugin     使用该文件夹的插件
-     * @param folderName 存储数据文件夹的名字
-     * @return 创建的存储数据的文件夹
+     * @param plugin     The plugin which owns and controls all the data
+     * @param folderName Name of the folder which stores data
+     * @return The folder which stores data
      */
     @NotNull
-    protected File mkdirs(@NotNull Plugin plugin, @Nullable String folderName) {
+    protected static File mkdirs(@NotNull Plugin plugin, @Nullable String folderName) {
         File dataFolder = plugin.getDataFolder();
         File folder = folderName == null ? dataFolder : new File(dataFolder.getAbsolutePath() + "\\" + folderName);
 
         if (!dataFolder.exists()) {
             boolean result = dataFolder.mkdir();
-            if (!result) throw new RuntimeException("无法创建插件数据文件夹!");
+            if (!result) throw new RuntimeException("Cannot create the plugin folder!");
         }
         if (!folder.exists()) {
             boolean result = folder.mkdir();
-            if (!result) throw new RuntimeException("无法创建" + folder.getName() + "文件夹!");
+            if (!result) throw new RuntimeException("Cannot create '" + folder.getName() + "' folder!");
         }
         return folder;
     }

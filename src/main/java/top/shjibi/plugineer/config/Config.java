@@ -12,12 +12,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
- * 代表了该插件的一种配置文件
+ * A configuration of a plugin
  */
 public class Config extends Configurable<YamlConfiguration> {
 
@@ -25,27 +23,42 @@ public class Config extends Configurable<YamlConfiguration> {
     protected final File folder;
     protected final File[] files;
     protected final YamlConfiguration config;
+    protected final YamlConfiguration defaults;
     protected final String name;
 
+    /**
+     * Creates a {@link Config} with the specified name
+     *
+     * @param plugin {@link Plugin} that the {@link Config} belongs to.
+     * @param name   Name of the config, will be used to create the config file
+     */
     public Config(@NotNull JavaPlugin plugin, @NotNull String name) {
         this(plugin, name, null);
     }
 
 
+    /**
+     * Creates a {@link Config} with the specified name
+     *
+     * @param plugin {@link Plugin} that the {@link Config} belongs to.
+     * @param name   Name of the config, will be used to create the config file
+     * @param folderPath Folder which stores the config file.
+     */
     public Config(@NotNull JavaPlugin plugin, @NotNull String name, @Nullable String folderPath) {
         this.plugin = plugin;
         this.name = name;
         this.folder = mkdirs(plugin, folderPath);
         this.files = new File[]{new File(folder.getAbsolutePath() + "\\" + name + ".yml")};
+        this.defaults = loadDefault();
         this.config = load(files[0]);
     }
 
     /**
-     * 在指定路径创建一个ConfigurationSection，之前在此路径的数据将被替换为map
+     * Creates an empty {@link ConfigurationSection} at the specified path with specified data.
      *
-     * @param path 要使用的路径
-     * @param map  要使用的数据
-     * @return 创建的ConfigurationSection
+     * @param path The specified path
+     * @param map  The data to put
+     * @return Newly created section
      */
     @NotNull
     public ConfigurationSection createSection(@NotNull String path, @NotNull Map<?, ?> map) {
@@ -53,10 +66,11 @@ public class Config extends Configurable<YamlConfiguration> {
     }
 
     /**
-     * 在指定路径创建一个ConfigurationSection，之前在此路径的数据将被清空
+     * Creates an empty ConfigurationSection at the specified path, any value that was previously
+     * set at this path will be overwritten.
      *
-     * @param path 要使用的路径
-     * @return 创建的ConfigurationSection
+     * @param path The specified path
+     * @return Newly created section
      */
     @NotNull
     public ConfigurationSection createSection(@NotNull String path) {
@@ -64,75 +78,65 @@ public class Config extends Configurable<YamlConfiguration> {
     }
 
     /**
-     * 将指定路径的数据设置成value
+     * Sets the provided path to a specified value
      *
-     * @param path  要使用的路径
-     * @param value 要设置的数据
+     * @param path  The provided path
+     * @param value The value to set
      */
     public void setConfig(@NotNull String path, @Nullable Object value) {
         config.set(path, value);
     }
 
     /**
-     * 获取一个路径的配置
+     * Gets the value of a provided path as a {@link String}
      *
-     * @param path 要获取的配置的路径
+     * @param path The provided path
+     * @return Value as a {@link String}, or null if the provided path doesn't exist
      */
-    @NotNull
+    @Nullable
     public String getConfig(@NotNull String path) {
-        return Objects.toString(config.get(path));
+        Object o = config.get(path);
+        if (o == null) return null;
+        return o.toString();
     }
 
     /**
-     * 获取一个路径的配置
+     * Gets the value of a provided path cast to the given class.
      *
-     * @param clazz 指定配置的类型，如果不符合该类型，则返回null
-     * @param path  要获取的配置的路径
+     * @param clazz The given class.
+     * @param path  The provided path
+     * @return Value cast to the given class, or null if the value can't be cast to the given class.
      */
     @Nullable
     public <T> T getConfig(@NotNull Class<T> clazz, @NotNull String path) {
-        return config.getObject(path, clazz);
+        return config.getObject(path, clazz, null);
     }
 
     /**
-     * 获取一个路径中所有的注释
+     * Gets the default value of a provided path as a {@link String}
      *
-     * @param path 注释所在的路径
+     * @param path The provided path
+     * @return Default value as a {@link String}, or null if the provided path doesn't exist
      */
-    @NotNull
-    public List<String> getComments(@NotNull String path) {
-        return config.getComments(path);
+    @Nullable
+    public String getDefaultConfig(@NotNull String path) {
+        Object o = defaults.get(path);
+        if (o == null) return null;
+        return o.toString();
     }
 
     /**
-     * 获取一个路径中行内注释
+     * Gets the default value of a provided path cast to the given class.
      *
-     * @param path 行内注释所在的路径
+     * @param clazz The given class.
+     * @param path  The provided path
+     * @return Default value cast to the given class, or null if the value can't be cast to the given class.
      */
-    @NotNull
-    public List<String> getInlineComments(@NotNull String path) {
-        return config.getInlineComments(path);
+    @Nullable
+    public <T> T getDefaultConfig(@NotNull Class<T> clazz, @NotNull String path) {
+        return defaults.getObject(path, clazz, null);
     }
 
-    /**
-     * 设置一个路径中所有的注释
-     *
-     * @param path     注释所在的路径
-     * @param comments 注释
-     */
-    public void setComments(@NotNull String path, @Nullable List<String> comments) {
-        config.setComments(path, comments);
-    }
-
-    /**
-     * 设置一个路径中行内注释
-     *
-     * @param path     行内注释所在的路径
-     * @param comments 注释
-     */
-    public void setInlineComments(@NotNull String path, @Nullable List<String> comments) {
-        config.setInlineComments(path, comments);
-    }
 
 
     @Override
@@ -141,36 +145,45 @@ public class Config extends Configurable<YamlConfiguration> {
         try {
             config.save(file);
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("无法保存文件: " + file.getName());
+            throw new RuntimeException("Cannot save file: " + file.getName(), e);
         }
     }
 
+    /**
+     * Loads the configuration from the config file again
+     */
     public void reload() {
         File file = files[0];
         try {
             config.load(file);
         } catch (IOException | InvalidConfigurationException e) {
-            throw new RuntimeException("无法重新加载配置文件: " + file.getName());
+            throw new RuntimeException("Cannot reload config: " + file.getName(), e);
         }
+    }
+
+    /**
+     * Loads the default value of this configuration
+     *
+     * @return The default configuration
+     */
+    public YamlConfiguration loadDefault() {
+        InputStream inputStream = plugin.getResource(name + ".yml");
+        if (inputStream == null) return new YamlConfiguration();
+        return YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
     }
 
     @Override
     @NotNull
     protected YamlConfiguration load(@NotNull File file) {
-        YamlConfiguration config = new YamlConfiguration();
-        try {
-            if (!file.exists()) {
-                InputStream inputStream = plugin.getResource(name + ".yml");
-                if (inputStream == null) return config;
-                config.load(new InputStreamReader(inputStream));
-                return config;
+        if (!file.exists()) {
+            try {
+                defaults.save(file);
+            } catch (IOException e) {
+                throw new RuntimeException("Cannot save default config: " + name, e);
             }
-            config.load(file);
-            return config;
-        } catch (IOException | InvalidConfigurationException e) {
-            throw new RuntimeException("无法加载数据: " + file.getName());
+            return defaults;
         }
+        return YamlConfiguration.loadConfiguration(file);
     }
 
     @Override
@@ -201,5 +214,10 @@ public class Config extends Configurable<YamlConfiguration> {
     @NotNull
     public YamlConfiguration getData() {
         return config;
+    }
+
+    @NotNull
+    public YamlConfiguration getDefaults() {
+        return defaults;
     }
 }

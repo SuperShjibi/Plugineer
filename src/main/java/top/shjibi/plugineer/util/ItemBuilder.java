@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 帮你快速构造物品的类
+ * A utility class that helps you build items conveniently
  */
 public final class ItemBuilder {
 
@@ -38,11 +38,11 @@ public final class ItemBuilder {
     }
 
     /**
-     * 获取一个物品材料为material, 物品数量为amount的ItemBuilder
+     * Gets an ItemBuilder with the given material and item amount
      *
-     * @param material 构造ItemBuilder的物品的材料
-     * @param amount   构造ItemBuilder的物品的数量
-     * @return 一个ItemBuilder
+     * @param material material to build with
+     * @param amount   item amount to build with
+     * @return An ItemBuilder
      */
     @NotNull
     public static ItemBuilder of(@NotNull Material material, int amount) {
@@ -50,10 +50,10 @@ public final class ItemBuilder {
     }
 
     /**
-     * 获取一个物品材料为material, 物品数量为1的ItemBuilder
+     * Gets an ItemBuilder with the given material and 1 as item amount
      *
-     * @param material 构造ItemBuilder的物品的材料
-     * @return 一个ItemBuilder
+     * @param material The material to build with
+     * @return An ItemBuilder
      */
     @NotNull
     public static ItemBuilder of(@NotNull Material material) {
@@ -61,10 +61,10 @@ public final class ItemBuilder {
     }
 
     /**
-     * 获取一个物品为itemStack的ItemBuilder
+     * Gets an ItemBuilder with the given item stack
      *
-     * @param itemStack 构造ItemBuilder的物品
-     * @return 一个ItemBuilder
+     * @param itemStack The old ItemStack used for the final ItemStack
+     * @return An ItemBuilder
      */
     @NotNull
     public static ItemBuilder of(@NotNull ItemStack itemStack) {
@@ -72,9 +72,10 @@ public final class ItemBuilder {
     }
 
     /**
-     * 将此ItemBuilder物品的名字设为name
+     * Sets the display name of the final item to the given name
      *
-     * @return 名字为name的ItemBuilder
+     * @param name name to build with
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public ItemBuilder withDisplayName(@NotNull String name) {
@@ -83,9 +84,10 @@ public final class ItemBuilder {
     }
 
     /**
-     * 将此ItemBuilder的物品的描述设为lore
+     * Sets the lore of the final item to the given lore
      *
-     * @return 描述为lore的ItemBuilder
+     * @param lore lore to build with
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public ItemBuilder withLore(String... lore) {
@@ -94,9 +96,10 @@ public final class ItemBuilder {
     }
 
     /**
-     * 将此ItemBuilder的物品的描述设为lore
+     * Sets the lore of the final item to the given lore
      *
-     * @return 描述为lore的ItemBuilder
+     * @param lore lore to build with
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public ItemBuilder withLore(List<String> lore) {
@@ -105,11 +108,11 @@ public final class ItemBuilder {
     }
 
     /**
-     * 给此ItemBuilder的物品添加一个属性修改
+     * Adds an {@link AttributeModifier} to the final item
      *
-     * @param attribute 要修改的属性
-     * @param modifier  要修改属性的效果
-     * @return 添加了属性修改的ItemBuilder
+     * @param attribute attribute to add
+     * @param modifier  modifier to add
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public ItemBuilder withAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
@@ -118,10 +121,10 @@ public final class ItemBuilder {
     }
 
     /**
-     * 给此ItemBuilder的物品删除一个属性修改
+     * Removes an {@link AttributeModifier} from the final item
      *
-     * @param attribute 要删除的属性
-     * @return 删除了属性修改的ItemBuilder
+     * @param attribute The attribute to remove
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public ItemBuilder withoutAttributeModifier(@NotNull Attribute attribute) {
@@ -130,23 +133,23 @@ public final class ItemBuilder {
     }
 
     /**
-     * 给此ItemBuilder的物品删除一个属性修改
+     * Removes an {@link AttributeModifier} from the final item
      *
-     * @param attribute 要删除的属性
-     * @param modifier  要删除的属性修改效果
-     * @return 删除了属性修改的ItemBuilder
+     * @param attribute The attribute to remove
+     * @param modifier  The modifier to remove
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public ItemBuilder withoutAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
-        itemMeta.removeAttributeModifier(attribute);
+        itemMeta.removeAttributeModifier(attribute, modifier);
         return this;
     }
 
     /**
-     * 给此ItemBuilder的物品添加多个标签
+     * Adds some flags to the final item
      *
-     * @param flags 要添加的所有标签
-     * @return 添加了标签的ItemBuilder
+     * @param flags flags to add
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public ItemBuilder withItemFlags(@NotNull ItemFlag... flags) {
@@ -155,10 +158,10 @@ public final class ItemBuilder {
     }
 
     /**
-     * 给此ItemBuilder的物品删除多个标签
+     * Removes some flags from the final item
      *
-     * @param flags 要删除的所有标签
-     * @return 删除了标签的ItemBuilder
+     * @param flags The flags to remove
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public ItemBuilder withoutItemFlags(@NotNull ItemFlag... flags) {
@@ -167,12 +170,12 @@ public final class ItemBuilder {
     }
 
     /**
-     * 给此ItemBuilder附魔
+     * Adds an {@link Enchantment} to the final item
      *
-     * @param enchantment            需要的附魔
-     * @param level                  需要的等级
-     * @param ignoreLevelRestriction 是否忽略等级限制
-     * @return 一个附了指定魔咒的ItemBuilder
+     * @param enchantment            enchantment to add
+     * @param level                  level of the enchantment
+     * @param ignoreLevelRestriction Whether to ignore the level restriction
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public ItemBuilder withEnchant(@NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
@@ -181,10 +184,10 @@ public final class ItemBuilder {
     }
 
     /**
-     * 给此ItemBuilder去除附魔
+     * Removes an {@link Enchantment} from the final item
      *
-     * @param enchantment 需要去除的附魔
-     * @return 一个去除了指定附魔的ItemBuilder
+     * @param enchantment The enchantment to remove
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public ItemBuilder withoutEnchant(@NotNull Enchantment enchantment) {
@@ -193,12 +196,12 @@ public final class ItemBuilder {
     }
 
     /**
-     * 给此ItemBuilder添加永久数据
+     * Adds data to the final item
      *
-     * @param key  数据键
-     * @param type 数据种类
-     * @param z    数据值
-     * @return 一个持有指定数据的ItemBuilder
+     * @param key  key of data
+     * @param type type of data
+     * @param z    value of data
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public <T, Z> ItemBuilder withPersistentData(NamespacedKey key, PersistentDataType<T, Z> type, Z z) {
@@ -207,10 +210,10 @@ public final class ItemBuilder {
     }
 
     /**
-     * 给此ItemBuilder删除永久数据
+     * removes data from the final item
      *
-     * @param key 数据键
-     * @return 一个删除了指定数据的ItemBuilder
+     * @param key the key to remove
+     * @return The modified {@link ItemBuilder}
      */
     @NotNull
     public ItemBuilder withoutPersistentData(NamespacedKey key) {
@@ -219,9 +222,9 @@ public final class ItemBuilder {
     }
 
     /**
-     * 返回物品的ItemMeta
+     * Gets the {@link ItemMeta} of the ItemBuilder
      *
-     * @return 物品的ItemMeta
+     * @return The {@link ItemMeta}
      */
     @NotNull
     public ItemMeta getItemMeta() {
@@ -229,9 +232,9 @@ public final class ItemBuilder {
     }
 
     /**
-     * 构建最终的物品
+     * Builds the final {@link ItemStack}
      *
-     * @return 最终的物品
+     * @return The final item
      */
     @NotNull
     public ItemStack build() {
