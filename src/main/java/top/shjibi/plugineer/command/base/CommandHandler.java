@@ -33,12 +33,11 @@ public abstract class CommandHandler implements TabExecutor {
     public CommandHandler(@NotNull JavaPlugin plugin) {
         this.plugin = plugin;
 
-        // Reads the command information
         CommandInfo[] infoArray = getClass().getAnnotationsByType(CommandInfo.class);
         if (infoArray.length == 0) throw new RuntimeException("CommandInfo is not found!");
         CommandInfo info = infoArray[0];
 
-        this.names = (String[]) Arrays.stream(info.name()).map(s -> s.toLowerCase(Locale.ENGLISH)).toArray();
+        this.names = Arrays.stream(info.name()).map(s -> s.toLowerCase(Locale.ENGLISH)).toList().toArray(new String[0]);
         this.minArgs = info.minArgs();
         this.usage = info.usage();
     }
@@ -105,14 +104,14 @@ public abstract class CommandHandler implements TabExecutor {
     }
 
     /**
-     * Gets the minimum argument count required for the command to run
+     * Gets the minimum argument count required for the command to run.
      */
     public int getMinArgs() {
         return minArgs;
     }
 
     /**
-     * 获取指令用法
+     * Gets the usage of this command.
      */
     @NotNull
     public String[] getUsage() {

@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.shjibi.plugineer.command.base.CommandHandler;
-import top.shjibi.plugineer.command.base.annotations.CommandRegistration;
+import top.shjibi.plugineer.command.base.annotations.RegisterCommand;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -66,7 +66,7 @@ public final class CommandManager {
     }
 
     /**
-     * Registers all the command handlers, if the handler used {@link CommandRegistration}, also registers the commands.
+     * Registers all the command handlers, if the handler used {@link RegisterCommand}, also registers the commands.
      */
     public void register() {
         for (Class<?> clazz : handlerClasses) {
@@ -74,7 +74,7 @@ public final class CommandManager {
                 Object obj = clazz.getConstructor(JavaPlugin.class).newInstance(plugin);
                 if (!(obj instanceof CommandHandler handler)) continue;
                 List<String> nameList = List.of(handler.getNames());
-                for (CommandRegistration registration : handler.getClass().getAnnotationsByType(CommandRegistration.class)) {
+                for (RegisterCommand registration : handler.getClass().getAnnotationsByType(RegisterCommand.class)) {
                     String name = registration.name().toLowerCase(Locale.ENGLISH);
                     if (nameList.contains(name)) {
                         registerCommand(registration.replaceConflict(),

@@ -1,5 +1,6 @@
 package top.shjibi.plugineer.config;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -8,11 +9,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * A configuration of a plugin
@@ -167,9 +166,17 @@ public class Config extends Configurable<YamlConfiguration> {
      * @return The default configuration
      */
     public YamlConfiguration loadDefault() {
+        YamlConfiguration ret = new YamlConfiguration();
         InputStream inputStream = plugin.getResource(name + ".yml");
-        if (inputStream == null) return new YamlConfiguration();
-        return YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
+        if (inputStream == null) {
+            return ret;
+        }
+        try {
+            ret.load(new InputStreamReader(inputStream));
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException("Cannot load default config: " + name, e);
+        }
+        return ret;
     }
 
     @Override
@@ -183,7 +190,15 @@ public class Config extends Configurable<YamlConfiguration> {
             }
             return defaults;
         }
-        return YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration config = new YamlConfiguration();
+        try {
+            config.load(file);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot load config: " + name, e);
+        } catch (InvalidConfigurationException e) {
+            Bukkit.getLogger().log(Level.SEVERE, "Cannot load config because of It's invalid.");
+        }
+        return config;
     }
 
     @Override

@@ -9,8 +9,8 @@ import java.lang.annotation.*;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Repeatable(CommandRegistrations.class)
-public @interface CommandRegistration {
+@Repeatable(RegisterCommands.class)
+public @interface RegisterCommand {
 
     /**
      * Name of this command
